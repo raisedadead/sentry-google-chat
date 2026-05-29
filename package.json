@@ -1,0 +1,58 @@
+{
+  "name": "sentry-google-chat",
+  "version": "0.1.0",
+  "description": "Forward Sentry alerts to Google Chat (Google Workspace) spaces",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [
+    "sentry",
+    "google-chat",
+    "google-workspace",
+    "webhook",
+    "alerts",
+    "integration"
+  ],
+  "author": "Mrugesh Mohapatra <aichat@mrugesh.dev>",
+  "license": "ISC",
+  "type": "module",
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raisedadead/sentry-google-chat.git"
+  },
+  "dependencies": {
+    "@hono/node-server": "2.0.4",
+    "@sentry/node": "10.55.0",
+    "hono": "4.12.23",
+    "pino": "10.3.1",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.12.4",
+    "@vitest/coverage-v8": "4.1.7",
+    "eslint": "10.4.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.6.0",
+    "pino-pretty": "13.1.3",
+    "prettier": "3.8.3",
+    "tsx": "4.22.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.60.0",
+    "vitest": "4.1.7"
+  }
+}
