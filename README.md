@@ -122,6 +122,24 @@ docker run -p 8080:8080 --env-file .env sentry-google-chat
 
 The image runs as a non-root user and writes nothing to disk.
 
+### DigitalOcean App Platform
+
+A ready spec is in [`.do/app.yaml`](./.do/app.yaml). App Platform builds the Dockerfile, gives the service an HTTPS URL automatically, and sets `PORT` (which the app reads). Steps:
+
+1. Push this repo to GitHub and set `services[0].github.repo` in `.do/app.yaml`.
+
+1. Create the app:
+
+   ```sh
+   doctl apps create --spec .do/app.yaml
+   ```
+
+1. In the App Platform dashboard, set the real values for the `SECRET` env vars (`SENTRY_CLIENT_SECRET`, `GCHAT_WEBHOOK_DEFAULT`, optionally `GCHAT_ROUTES`, `SENTRY_DSN`), then redeploy.
+
+1. Point the Sentry internal integration's Webhook URL at `https://<your-app>.ondigitalocean.app/sentry/webhook`.
+
+`instance_count` is `1` by design (in-process queue — see Limitations).
+
 ### Kubernetes
 
 Manifests are in [`k8s/`](./k8s). See [`k8s/README.md`](./k8s/README.md). Create the Secret out of band, then apply the Deployment, Service, and Ingress. It runs as a single replica by design (see Limitations).
