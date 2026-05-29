@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentry-google-chat
+  labels:
+    app: sentry-google-chat
+spec:
+  # The in-process delivery queue and idempotency cache are per-pod. Run a
+  # single replica so duplicate suppression and per-space throttling stay
+  # global. Scaling out requires swapping the queue for a durable backend.
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sentry-google-chat
+  template:
+    metadata:
+      labels:
+        app: sentry-google-chat
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: sentry-google-chat
+          image: ghcr.io/raisedadead/sentry-google-chat:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: sentry-google-chat
+          env:
+            - name: PORT
+              value: '8080'
+            - name: NODE_ENV
+              value: production
+            - name: LOG_LEVEL
+              value: info
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 192Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
