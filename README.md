@@ -111,32 +111,41 @@ pnpm dev            # tsx watch, pretty logs
 
 To exercise the webhook locally, point a Sentry internal integration at a tunnel (for example `cloudflared`/`ngrok`) forwarding to `http://localhost:8080`.
 
-## Deploy
+## Container image
 
-### Docker
+The release pipeline publishes a public multi-arch image (linux/amd64, linux/arm64) to the GitHub Container Registry on every change to the `live` branch and on version tags. Deploy it anywhere — no build required:
 
 ```sh
-docker build -t sentry-google-chat .
-docker run -p 8080:8080 --env-file .env sentry-google-chat
+docker run -p 8080:8080 --env-file .env ghcr.io/raisedadead/sentry-google-chat:latest
 ```
 
-The image runs as a non-root user and writes nothing to disk.
+Tags: `latest` (tip of `live`), `vX.Y.Z` / `vX.Y` (version tags), and the short commit SHA. Pin to a version tag or digest for reproducible deploys. The image runs as a non-root user and writes nothing to disk.
+
+To build it yourself: `docker build -t sentry-google-chat .`
+
+## Branch model and releases
+
+- `main` — development branch. CI runs on every push/PR; it may be red.
+- `live` — production branch, kept green at all times. CI auto-promotes `main` to `live` only after lint + typecheck + tests + Docker build all pass ([`ci.yml`](./.github/workflows/ci.yml)), so `live` never advances to a broken commit.
+- A push to `live` (or a `v*` tag) triggers [`release.yml`](./.github/workflows/release.yml), which builds and pushes the public image, then optionally redeploys the DigitalOcean app.
+
+## Deploy
 
 ### DigitalOcean App Platform
 
-A ready spec is in [`.do/app.yaml`](./.do/app.yaml). App Platform builds the Dockerfile, gives the service an HTTPS URL automatically, and sets `PORT` (which the app reads). Steps:
+A ready spec is in [`.do/app.yaml`](./.do/app.yaml) — it deploys the public GHCR image and App Platform provides an HTTPS URL automatically. Steps:
 
-1. Push this repo to GitHub and set `services[0].github.repo` in `.do/app.yaml`.
-
-1. Create the app:
+1. Create the app once:
 
    ```sh
    doctl apps create --spec .do/app.yaml
    ```
 
-1. In the App Platform dashboard, set the real values for the `SECRET` env vars (`SENTRY_CLIENT_SECRET`, `GCHAT_WEBHOOK_DEFAULT`, optionally `GCHAT_ROUTES`, `SENTRY_DSN`), then redeploy.
+1. Set the real values for the `SECRET` env vars (`SENTRY_CLIENT_SECRET`, `GCHAT_WEBHOOK_DEFAULT`, optionally `GCHAT_ROUTES`, `SENTRY_DSN`) in the App Platform dashboard, then redeploy.
 
 1. Point the Sentry internal integration's Webhook URL at `https://<your-app>.ondigitalocean.app/sentry/webhook`.
+
+App Platform cannot auto-redeploy from GHCR (a DOCR-only feature), so the release workflow triggers the redeploy for you. To enable that, set a repository variable `DO_APP_ID` (the app's id) and a secret `DIGITALOCEAN_ACCESS_TOKEN`; otherwise the deploy step is skipped and you redeploy manually with `doctl apps create-deployment <app-id>`.
 
 `instance_count` is `1` by design (in-process queue — see Limitations).
 

@@ -3,16 +3,21 @@
 # Update:  doctl apps update <app-id> --spec .do/app.yaml
 # Set the real SECRET values in the App Platform dashboard (or via an encrypted
 # spec) after the first deploy — the placeholders below only let it boot.
+#
+# Deploys the PUBLIC image published by .github/workflows/release.yml. GHCR does
+# not support App Platform auto-redeploy (DOCR only), so the release workflow
+# triggers a redeploy with `doctl apps create-deployment` after pushing a new
+# image. Pin `tag` to a version (e.g. v1.2.3) instead of `latest` if you prefer
+# explicit, immutable deploys.
 name: sentry-google-chat
 region: blr # change to your nearest: nyc, ams, fra, lon, sfo, sgp, syd, tor
 services:
   - name: web
-    # Update to your GitHub repo (App Platform builds from this on push).
-    github:
-      repo: raisedadead/sentry-google-chat
-      branch: main
-      deploy_on_push: true
-    dockerfile_path: Dockerfile
+    image:
+      registry_type: GHCR
+      registry: raisedadead
+      repository: sentry-google-chat
+      tag: latest
     http_port: 8080
     # Keep at 1: the delivery queue, rate limiter, and idempotency cache are
     # in-process. Scaling out needs a durable queue (see README Limitations).
