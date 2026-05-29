@@ -126,4 +126,22 @@ describe('DeliveryQueue', () => {
     expect(deliver).toHaveBeenCalledTimes(2);
     expect(sleep).not.toHaveBeenCalled();
   });
+
+  it('reports in-flight work via size() and clears after drain', async () => {
+    const deliver = vi.fn<DeliverFn>(() => Promise.resolve(ok));
+    const { queue } = makeQueue(deliver);
+    queue.enqueue({ webhookUrl: 'u', message: msg, requestId: 'r1' });
+    expect(queue.size()).toBe(1);
+    await queue.drain();
+    expect(queue.size()).toBe(0);
+  });
+
+  it('uses real timers by default to throttle the same space', async () => {
+    const deliver = vi.fn<DeliverFn>(() => Promise.resolve(ok));
+    const queue = new DeliveryQueue({ deliver, minIntervalMs: 1 });
+    queue.enqueue({ webhookUrl: 'space-a', message: msg, requestId: 'r1' });
+    queue.enqueue({ webhookUrl: 'space-a', message: msg, requestId: 'r2' });
+    await queue.drain();
+    expect(deliver).toHaveBeenCalledTimes(2);
+  });
 });
