@@ -1,0 +1,38 @@
+{
+  "action": "critical",
+  "actor": { "id": "sentry", "name": "Sentry", "type": "application" },
+  "data": {
+    "description_text": "1000 events in the last 10 minutes\nFilter: level:error",
+    "description_title": "Critical: Error rate is high",
+    "web_url": "https://sentry.io/organizations/my-org/alerts/rules/details/1/?alert=123",
+    "metric_alert": {
+      "id": "123",
+      "identifier": "1",
+      "organization_id": "42",
+      "title": "Error rate is high",
+      "status": 20,
+      "status_method": 3,
+      "type": 2,
+      "date_created": "2022-01-01T00:00:00Z",
+      "date_started": "2022-01-01T00:05:00Z",
+      "date_detected": "2022-01-01T00:05:00Z",
+      "date_closed": null,
+      "projects": ["api-prod"],
+      "alert_rule": {
+        "id": "1",
+        "name": "Error rate is high",
+        "aggregate": "count()",
+        "dataset": "events",
+        "query": "level:error",
+        "time_window": 10,
+        "threshold_type": 0,
+        "resolve_threshold": null,
+        "threshold_period": 1,
+        "projects": ["api-prod"],
+        "status": 0,
+        "triggers": []
+      }
+    }
+  },
+  "installation": { "uuid": "d4b3f1a0-1c2d-4e5f-8a9b-0c1d2e3f4a5b" }
+}
