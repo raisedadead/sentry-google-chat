@@ -1,6 +1,6 @@
 # sentry-google-chat documentation
 
-Full guide for configuring and running the service. For deploying the published image, see [deployment.md](./deployment.md).
+Full guide for configuring and running the service.
 
 ## How it works
 
@@ -117,7 +117,7 @@ To exercise the webhook locally, point a Sentry internal integration at a tunnel
 
 Releases are driven by [Conventional Commits](https://www.conventionalcommits.org/). Merge pull requests into `main` with **squash merge** configured to use the **PR title** as the commit subject — that title becomes the lone commit on `main` and is what release-please reads, so it must be conventional (`feat:`, `fix:`, `feat!:` / `BREAKING CHANGE:` for majors). The PR title is linted on every PR ([`pr-title.yml`](../.github/workflows/pr-title.yml)); individual PR commits need not be conventional. In the repository settings, allow squash merging with the "Pull request title" squash message (and disable merge/rebase merges to keep history clean).
 
-[release-please](https://github.com/googleapis/release-please-action) watches `main` and maintains a release PR that bumps the version in `package.json` and updates `CHANGELOG.md`. Merging that PR cuts the `vX.Y.Z` tag and GitHub Release, which triggers [`release.yml`](../.github/workflows/release.yml) to build and push the public multi-arch image to GHCR (`latest`, `vX.Y.Z`, `vX.Y`). The pipeline publishes the image only — deploying it is the consumer's responsibility (see [deployment.md](./deployment.md)).
+[release-please](https://github.com/googleapis/release-please-action) watches `main` and maintains a release PR that bumps the version in `package.json` and updates `CHANGELOG.md`. Merging that PR cuts the `vX.Y.Z` tag and GitHub Release, which triggers [`release.yml`](../.github/workflows/release.yml) to build and push the public multi-arch image to GHCR (`latest`, `vX.Y.Z`, `vX.Y`). The pipeline publishes the image only — deploying it is the consumer's responsibility.
 
 > First release: release-please proposes the initial version from `package.json`. Add `release-as: <version>` to the release-please step once if you want a different starting point.
 
