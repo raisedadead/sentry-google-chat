@@ -16,6 +16,7 @@ docker run -p 8080:8080 \
 ## Documentation
 
 - [Setup, configuration, and architecture](./docs/README.md)
+- [Deployment](./docs/deployment.md)
 
 ## Development
 
