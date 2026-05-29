@@ -115,7 +115,7 @@ To exercise the webhook locally, point a Sentry internal integration at a tunnel
 
 ## Releases
 
-Releases are driven by [Conventional Commits](https://www.conventionalcommits.org/). Land changes on `main` with conventional messages (`feat:`, `fix:`, `feat!:`/ `BREAKING CHANGE:` for majors). Commit messages are linted on pull requests ([`ci.yml`](../.github/workflows/ci.yml), commitlint + config-conventional).
+Releases are driven by [Conventional Commits](https://www.conventionalcommits.org/). Merge pull requests into `main` with **squash merge** configured to use the **PR title** as the commit subject — that title becomes the lone commit on `main` and is what release-please reads, so it must be conventional (`feat:`, `fix:`, `feat!:` / `BREAKING CHANGE:` for majors). The PR title is linted on every PR ([`pr-title.yml`](../.github/workflows/pr-title.yml)); individual PR commits need not be conventional. In the repository settings, allow squash merging with the "Pull request title" squash message (and disable merge/rebase merges to keep history clean).
 
 [release-please](https://github.com/googleapis/release-please-action) watches `main` and maintains a release PR that bumps the version in `package.json` and updates `CHANGELOG.md`. Merging that PR cuts the `vX.Y.Z` tag and GitHub Release, which triggers [`release.yml`](../.github/workflows/release.yml) to build and push the public multi-arch image to GHCR (`latest`, `vX.Y.Z`, `vX.Y`). The pipeline publishes the image only — deploying it is the consumer's responsibility (see [deployment.md](./deployment.md)).
 
