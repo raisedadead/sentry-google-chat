@@ -156,4 +156,19 @@ describe('POST /sentry/webhook', () => {
     const job = enqueue.mock.calls[0]![0];
     expect(job.requestId.length).toBeGreaterThan(0);
   });
+
+  it('returns 500 via onError when enqueue throws', async () => {
+    const a = createApp({
+      clientSecret: SECRET,
+      gchat: { defaultWebhookUrl: DEFAULT_URL, routes: { 'api-prod': API_PROD_URL } },
+      queue: {
+        enqueue: () => {
+          throw new Error('boom');
+        },
+      },
+    });
+    const res = await a.request(webhookRequest(fixtureText('event-alert.json'), 'event_alert'));
+    expect(res.status).toBe(500);
+    expect(await res.text()).toBe('internal server error');
+  });
 });

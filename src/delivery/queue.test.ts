@@ -136,6 +136,15 @@ describe('DeliveryQueue', () => {
     expect(queue.size()).toBe(0);
   });
 
+  it('logs and swallows when a delivery task throws unexpectedly', async () => {
+    const deliver = vi.fn<DeliverFn>(() => Promise.reject(new Error('network down')));
+    const { queue, logger } = makeQueue(deliver);
+    queue.enqueue({ webhookUrl: 'u', message: msg, requestId: 'r1' });
+    await queue.drain();
+    expect(logger.error).toHaveBeenCalled();
+    expect(queue.size()).toBe(0);
+  });
+
   it('uses real timers by default to throttle the same space', async () => {
     const deliver = vi.fn<DeliverFn>(() => Promise.resolve(ok));
     const queue = new DeliveryQueue({ deliver, minIntervalMs: 1 });
