@@ -5,12 +5,17 @@ on:
     branches: [main]
   pull_request:
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: pnpm/action-setup@ac6db6d3c1f721f886538a378a2d73e85697340a # v6
@@ -26,6 +31,24 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - run: docker build -t sentry-google-chat:ci .
+
+  # Promote green main to the live branch, which App Platform auto-deploys.
+  # Runs only on push to main and only after build-test + docker pass, so live
+  # never advances to a red commit.
+  promote-to-live:
+    name: Promote green main to live
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [build-test, docker]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+      - run: git push origin HEAD:live
