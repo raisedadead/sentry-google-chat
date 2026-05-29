@@ -31,13 +31,6 @@ export interface DeliveryQueueOptions {
 const defaultSleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-/**
- * In-process, per-space delivery queue. Decouples the sub-1s Sentry webhook ACK
- * from Google Chat's ~1 msg/sec per-space rate limit: callers enqueue and return
- * immediately while messages are serialized per space, throttled, retried with
- * exponential backoff, and deduplicated by Sentry Request-ID. The DeliverFn is
- * injected so the transport can later be swapped for a durable queue.
- */
 export class DeliveryQueue {
   private readonly deliver: DeliverFn;
   private readonly logger: QueueLogger | undefined;

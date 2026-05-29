@@ -54,7 +54,7 @@ describe('loadConfig', () => {
   });
 
   it('throws a clear error on malformed GCHAT_ROUTES JSON without echoing its content', () => {
-    const malformed = `{"api":"${validUrl}`; /* missing closing */
+    const malformed = `{"api":"${validUrl}`;
     let thrown: unknown;
     try {
       loadConfig(baseEnv({ GCHAT_ROUTES: malformed }));

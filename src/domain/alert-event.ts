@@ -2,11 +2,6 @@ export type AlertKind = 'issue_alert' | 'metric_alert';
 
 export type Severity = 'critical' | 'warning' | 'info' | 'resolved';
 
-/**
- * Normalized, transport-agnostic representation of a Sentry alert. Both
- * issue alerts (event_alert) and metric alerts collapse into this shape so the
- * card renderer and router never touch raw Sentry payloads.
- */
 export interface AlertEvent {
   readonly kind: AlertKind;
   readonly severity: Severity;

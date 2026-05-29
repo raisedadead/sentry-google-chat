@@ -15,10 +15,6 @@ export interface PostOptions {
 const REPLY_OPTION = 'REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD';
 const DEFAULT_TIMEOUT_MS = 10_000;
 
-/**
- * Removes the `key`/`token` secrets from a Google Chat webhook URL so it can be
- * logged. The URL is a bare credential — anyone with it can post to the space.
- */
 export function redactWebhookUrl(webhookUrl: string): string {
   try {
     const url = new URL(webhookUrl);
