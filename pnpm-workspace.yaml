@@ -1,7 +1,9 @@
 allowBuilds:
   esbuild: true
+minimumReleaseAge: 10080
+trustLockfile: true
 minimumReleaseAgeExclude:
-  - "@sentry/core@10.55.0"
-  - "@sentry/node-core@10.55.0"
-  - "@sentry/node@10.55.0"
-  - "@sentry/opentelemetry@10.55.0"
+  - '@sentry/core@10.55.0'
+  - '@sentry/node-core@10.55.0'
+  - '@sentry/node@10.55.0'
+  - '@sentry/opentelemetry@10.55.0'
