@@ -37,18 +37,14 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - run: docker build -t sentry-google-chat:ci .
 
-  # Promote green main to the live branch, which App Platform auto-deploys.
-  # Runs only on push to main and only after build-test + docker pass, so live
-  # never advances to a red commit.
-  promote-to-live:
-    name: Promote green main to live
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [build-test, docker]
+  commitlint:
+    name: Lint commit messages
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
-      - run: git push origin HEAD:live
+      - uses: wagoid/commitlint-github-action@b948419dd99f3fd78a6548d48f94e3df7f6bf3ed # v6.2.1

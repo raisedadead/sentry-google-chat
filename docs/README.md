@@ -115,9 +115,11 @@ To exercise the webhook locally, point a Sentry internal integration at a tunnel
 
 ## Releases
 
-- `main` — development branch. CI runs on every push/PR; it may be red.
-- `live` — release branch, kept green at all times. CI auto-promotes `main` to `live` only after lint + typecheck + tests + Docker build all pass ([`ci.yml`](../.github/workflows/ci.yml)), so `live` never advances to a broken commit.
-- A push to `live` (or a `v*` tag) triggers [`release.yml`](../.github/workflows/release.yml), which builds and pushes the public multi-arch image to GHCR. It publishes the image only — deploying it is the consumer's responsibility (see [deployment.md](./deployment.md)).
+Releases are driven by [Conventional Commits](https://www.conventionalcommits.org/). Land changes on `main` with conventional messages (`feat:`, `fix:`, `feat!:`/ `BREAKING CHANGE:` for majors). Commit messages are linted on pull requests ([`ci.yml`](../.github/workflows/ci.yml), commitlint + config-conventional).
+
+[release-please](https://github.com/googleapis/release-please-action) watches `main` and maintains a release PR that bumps the version in `package.json` and updates `CHANGELOG.md`. Merging that PR cuts the `vX.Y.Z` tag and GitHub Release, which triggers [`release.yml`](../.github/workflows/release.yml) to build and push the public multi-arch image to GHCR (`latest`, `vX.Y.Z`, `vX.Y`). The pipeline publishes the image only — deploying it is the consumer's responsibility (see [deployment.md](./deployment.md)).
+
+> First release: release-please proposes the initial version from `package.json`. Add `release-as: <version>` to the release-please step once if you want a different starting point.
 
 ## Limitations
 

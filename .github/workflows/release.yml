@@ -2,19 +2,39 @@ name: Release
 
 on:
   push:
-    branches: [live]
-    tags: ['v*']
+    branches: [main]
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release
   cancel-in-progress: false
 
 jobs:
+  # release-please reads Conventional Commits on main and maintains a release PR
+  # that bumps the version + CHANGELOG. Merging that PR cuts the tag + GitHub
+  # Release, which sets release_created and triggers the publish job below.
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
+      major: ${{ steps.rp.outputs.major }}
+      minor: ${{ steps.rp.outputs.minor }}
+    steps:
+      - id: rp
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
+        with:
+          release-type: node
+
   publish:
     name: Build and push public image
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,10 +53,9 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/live' }}
-            type=sha,prefix=,format=short
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
+            type=raw,value=${{ needs.release-please.outputs.tag_name }}
+            type=raw,value=v${{ needs.release-please.outputs.major }}.${{ needs.release-please.outputs.minor }}
       - uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           context: .
