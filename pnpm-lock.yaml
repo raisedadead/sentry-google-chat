@@ -208,8 +208,8 @@ importers:
   .:
     dependencies:
       '@hono/node-server':
-        specifier: 2.0.4
-        version: 2.0.4(hono@4.12.30)
+        specifier: 2.1.0
+        version: 2.1.0(hono@4.12.30)
       '@sentry/node':
         specifier: 10.55.0
         version: 10.55.0
@@ -487,8 +487,8 @@ packages:
     resolution: {integrity: sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@hono/node-server@2.0.4':
-    resolution: {integrity: sha512-Ut3y0dMMPWy6bZ2kVfx25EOVbZlm15dhF4mOsezMlhpNHy+4MkU1qN9Y6lnruYi4wPmFzimGX2X7LF/FwHli4A==}
+  '@hono/node-server@2.1.0':
+    resolution: {integrity: sha512-XovyyCCnBzW+zKu+z/zq8hwNs4KOR5rEMAOxo2f40Q5xoOI37IMm6MIg2COOUtUApo0i6850MTBKH2u4QLGIqg==}
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
@@ -1663,7 +1663,7 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@hono/node-server@2.0.4(hono@4.12.30)':
+  '@hono/node-server@2.1.0(hono@4.12.30)':
     dependencies:
       hono: 4.12.30
 
