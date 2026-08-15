@@ -209,13 +209,13 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: 2.1.0
-        version: 2.1.0(hono@4.12.30)
+        version: 2.1.0(hono@4.13.1)
       '@sentry/node':
         specifier: 10.69.0
         version: 10.69.0(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))
       hono:
-        specifier: 4.12.30
-        version: 4.12.30
+        specifier: 4.13.1
+        version: 4.13.1
       pino:
         specifier: 10.3.1
         version: 10.3.1
@@ -1058,8 +1058,8 @@ packages:
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
 
-  hono@4.12.30:
-    resolution: {integrity: sha512-emn+JoJjrN9YTpRDS5it/UI2SO9BAE37T6I3d963RxcZ81G9A4pr2SZTEiiaiKbzx+NKRg5BZ89fCL7gCJCUog==}
+  hono@4.13.1:
+    resolution: {integrity: sha512-kdJoFVv2xmayw6cY09H7AbMJMt8Jn5jdlEdXsP7AGBdF2DIptVlKlOLKXP41yPip4/a3yQPv9gVcJYI8YY04dw==}
     engines: {node: '>=16.9.0'}
 
   html-escaper@2.0.2:
@@ -1723,9 +1723,9 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@hono/node-server@2.1.0(hono@4.12.30)':
+  '@hono/node-server@2.1.0(hono@4.13.1)':
     dependencies:
-      hono: 4.12.30
+      hono: 4.13.1
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -2292,7 +2292,7 @@ snapshots:
 
   help-me@5.0.0: {}
 
-  hono@4.12.30: {}
+  hono@4.13.1: {}
 
   html-escaper@2.0.2: {}
 
