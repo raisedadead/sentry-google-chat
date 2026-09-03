@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.1](https://github.com/raisedadead/sentry-google-chat/compare/v1.0.0...v1.0.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @hono/node-server to v2.1.0 ([#3](https://github.com/raisedadead/sentry-google-chat/issues/3)) ([ebaca5c](https://github.com/raisedadead/sentry-google-chat/commit/ebaca5cc2a4bd4f8ad27c738ec9601a3e316dce4))
+* **deps:** update dependency @sentry/node to v10.69.0 ([#11](https://github.com/raisedadead/sentry-google-chat/issues/11)) ([486ee27](https://github.com/raisedadead/sentry-google-chat/commit/486ee279a85763356097fae39681fc45589e7a80))
+* **deps:** update dependency @sentry/node to v10.70.0 ([#17](https://github.com/raisedadead/sentry-google-chat/issues/17)) ([7e77ce1](https://github.com/raisedadead/sentry-google-chat/commit/7e77ce1ba21cfef87363a449f36f7c28be30c761))
+* **deps:** update dependency hono to v4.12.30 ([#7](https://github.com/raisedadead/sentry-google-chat/issues/7)) ([2b08d24](https://github.com/raisedadead/sentry-google-chat/commit/2b08d241bab828e68ea18b08b4c64f8d24ec9436))
+* **deps:** update dependency hono to v4.13.1 ([#12](https://github.com/raisedadead/sentry-google-chat/issues/12)) ([9428a01](https://github.com/raisedadead/sentry-google-chat/commit/9428a01b6813bbf113f71567651e40ae3e457593))
+* **deps:** update dependency hono to v4.13.3 ([#20](https://github.com/raisedadead/sentry-google-chat/issues/20)) ([5678dd6](https://github.com/raisedadead/sentry-google-chat/commit/5678dd6fe3aa377d578010ac2a35090d7af7da9f))
+* **deps:** update dependency hono to v4.13.5 ([#21](https://github.com/raisedadead/sentry-google-chat/issues/21)) ([87e68e6](https://github.com/raisedadead/sentry-google-chat/commit/87e68e61d19c473f58be60e6a9c1130ba09067c5))
+
 ## 1.0.0 (2026-05-29)
 
 
