@@ -39,7 +39,7 @@
     "@sentry/node": "10.75.3",
     "hono": "4.13.13",
     "pino": "10.4.0",
-    "zod": "4.6.5"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
